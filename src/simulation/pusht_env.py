@@ -61,6 +61,7 @@ class PushTEnv:
 
         joint_id = self.model.joint("t_free").id
         self._block_dof_address = int(self.model.jnt_dofadr[joint_id])
+        self._block_qpos_address = int(self.model.jnt_qposadr[joint_id])
 
         self._renderer: mujoco.Renderer | None = None
         self.reset()
@@ -73,13 +74,67 @@ class PushTEnv:
             * float(self.model.opt.timestep)
         )
 
-    def reset(self) -> dict[str, object]:
-        """Restore the initial MuJoCo state without advancing time."""
+    def reset(
+        self,
+        *,
+        block_xy: tuple[float, float] | None = None,
+        block_yaw: float = 0.0,
+        pusher_xy: tuple[float, float] | None = None,
+    ) -> dict[str, object]:
+        """Reset to a valid, explicitly configured initial state.
+
+        No arguments preserve the original M2 reset behavior.
+        All inputs are validated before the physics state is changed.
+        """
+        block = (
+            np.zeros(2, dtype=np.float64)
+            if block_xy is None
+            else np.asarray(block_xy, dtype=np.float64)
+        )
+
+        pusher = (
+            self._initial_pusher_pos[:2].copy()
+            if pusher_xy is None
+            else np.asarray(pusher_xy, dtype=np.float64)
+        )
+
+        if block.shape != (2,) or not np.all(np.isfinite(block)):
+            raise ValueError("block_xy must contain two finite numbers")
+
+        if pusher.shape != (2,) or not np.all(np.isfinite(pusher)):
+            raise ValueError("pusher_xy must contain two finite numbers")
+
+        try:
+            yaw = float(block_yaw)
+        except (TypeError, ValueError, OverflowError) as exc:
+            raise ValueError("block_yaw must be finite") from exc
+
+        if not math.isfinite(yaw) or abs(yaw) > math.pi:
+            raise ValueError("block_yaw must be within [-pi, pi]")
+
+        if np.any(np.abs(block) > 0.25):
+            raise ValueError("block_xy exceeds the initial-state bounds")
+
+        if np.any(np.abs(pusher) > 0.45):
+            raise ValueError("pusher_xy exceeds the initial-state bounds")
+
+        if np.linalg.norm(pusher - block) < 0.16:
+            raise ValueError("Initial pusher and T-block are too close")
+
         mujoco.mj_resetData(self.model, self.data)
 
-        self.data.mocap_pos[self._mocap_id] = (
-            self._initial_pusher_pos
-        )
+        address = self._block_qpos_address
+
+        self.data.qpos[address : address + 2] = block
+
+        self.data.qpos[address + 3 : address + 7] = [
+            math.cos(yaw / 2.0),
+            0.0,
+            0.0,
+            math.sin(yaw / 2.0),
+        ]
+
+        self.data.mocap_pos[self._mocap_id, :2] = pusher
 
         mujoco.mj_forward(self.model, self.data)
         return self.observe()

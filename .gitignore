@@ -1,0 +1,49 @@
+# macOS
+.DS_Store
+.AppleDouble
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Python environments
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Generated datasets
+data/raw/
+data/processed/
+datasets/generated/
+
+# Model checkpoints and training outputs
+checkpoints/
+artifacts/
+runs/
+outputs/
+wandb/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local logs and temporary files
+*.log
+*.tmp
+*.swp

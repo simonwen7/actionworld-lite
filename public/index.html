@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#0b1220" />
+<meta name="description" content="ActionWorld Lite — genuine one-step physical world-model prediction, measured against MuJoCo." />
+<title>ActionWorld Lite — Interactive World Model</title>
+<link rel="stylesheet" href="/m8-style.css" />
+<script src="/m8-app.js" defer></script>
+</head>
+<body>
+<div class="top"><div class="brand"><span class="brandmark">◈</span> ACTIONWORLD<span class="lite">LITE</span></div><a class="github" href="https://github.com/simonwen7/actionworld-lite" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+<main>
+<div class="intro"><div class="eyebrow"><span class="live-dot"></span> LIVE PHYSICAL INFERENCE <span class="sep">/</span> RESEARCH DEMO</div><h1>Predict the <em>physical</em> world.</h1><p>Control the MuJoCo pusher. Observe what the frozen neural world model predicts, compare a fitted residual correction, and see the real physics after each action.</p></div>
+<div class="workspace">
+  <section class="panel scene"><div class="panelheader"><span>01 <strong>REAL SIMULATION</strong></span><span class="chip">MuJoCo · 256 × 256</span></div><div class="sceneimg"><img id="realFrame" alt="Real current MuJoCo physical scene" /><div class="scenewait" id="scenePlaceholder">Press <b>Start Session</b> to run the real physics engine.</div></div><div class="panefoot"><span>REAL OBSERVATION</span><span id="timeDisplay">t = — s</span></div></section>
+  <section class="panel scene"><div class="panelheader"><span>02 <strong>MODEL COMPARISON</strong></span><span class="chip">XY WORLD COORDINATES</span></div><div class="sceneimg"><canvas id="worldView" width="440" height="440" aria-label="Actual orange block, IC-01 blue prediction, and M6 purple prediction"></canvas></div><div class="legend"><span><i class="swatch-actual"></i> Actual</span><span><i class="swatch-baseline"></i> IC-01</span><span><i class="swatch-m6"></i> M6</span></div></section>
+  <section class="panel controls"><div class="panelheader"><span>03 <strong>INTERACT</strong></span><span class="chip" id="stepDisplay">STEP 0 / 64</span></div><div class="controlsinner"><div class="subhead">ACTION DISTANCE</div><div class="sizes" role="group" aria-label="Action step length"><button data-mm="5">5 mm</button><button data-mm="10" class="selected">10 mm</button><button data-mm="20">20 mm</button></div><div class="subhead">PUSHER DIRECTION</div><div class="dpad"><div></div><button data-direction="up" aria-label="Move pusher up">↑</button><div></div><button data-direction="left" aria-label="Move pusher left">←</button><div class="centerbox">+ XY</div><button data-direction="right" aria-label="Move pusher right">→</button><div></div><button data-direction="down" aria-label="Move pusher down">↓</button></div><div class="controlsbuttons"><button class="primary" id="startButton">Start Session</button><button id="resetButton">Reset ↺</button></div><div class="status" role="status" id="status">No active session. Real predictions require a running server.</div><div class="hint">One click = one actual PyTorch inference + one 0.05 s MuJoCo step. Session limited to 64 actions / 15 minutes.</div></div></section>
+</div>
+<div class="results"><div class="metric"><div class="metriclabel">IC-01 · NEXT XY ERROR</div><div class="metricnumber" id="baseError">—</div><div class="metricunit">cm · current action</div></div><div class="metric"><div class="metriclabel">M6 · NEXT XY ERROR</div><div class="metricnumber purple" id="m6Error">—</div><div class="metricunit">cm · current action</div></div><div class="metric"><div class="metriclabel">CORRECTION MAGNITUDE</div><div class="metricnumber" id="correction">—</div><div class="metricunit">mm · capped at 4 mm</div></div><div class="metric"><div class="metriclabel">PREDICTED / ACTUAL CONTACT</div><div class="metricnumber small" id="contact">—</div><div class="metricunit">M6 uses IC-01 contact</div></div></div>
+<section class="research"><div><div class="eyebrow">RESEARCH EVIDENCE</div><h2>Measured, not simulated claims.</h2><p>On the existing one-pass <strong>VALIDATION</strong> set (1,701 windows, 27 episodes), M6 reduced mean XY motion error from <strong>0.156625 cm</strong> to <strong>0.135983 cm</strong> (13.18% lower). The paired episode bootstrap 95% descriptive interval for M6−IC-01 was [−0.031218, −0.011330] cm. Static and no-contact cohorts worsened. Any live action can also worsen.</p></div><div class="researchstat"><span>13.18%</span><small>VALIDATION-only mean motion error reduction — NOT a new held-out TEST.</small></div></section>
+<footer><span>One-step real-observation-conditioned state prediction. No generated future RGB, autonomous learned rollout, or prerecorded action outcomes.</span><a href="https://github.com/simonwen7/actionworld-lite/blob/main/research/M6_RESIDUAL_EXPERIMENT.md" target="_blank" rel="noopener noreferrer">Read the research ↗</a></footer>
+</main>
+</body>
+</html>

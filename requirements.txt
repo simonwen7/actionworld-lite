@@ -1,0 +1,4 @@
+fastapi==0.117.1
+numpy==2.5.4
+mujoco==3.17.0
+torch==2.14.1

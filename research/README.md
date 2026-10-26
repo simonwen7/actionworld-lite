@@ -1,74 +1,26 @@
-# ActionWorld Lite Research
+# ActionWorld Lite — Research index
 
-This directory contains the research process, experimental evidence, and technical findings for ActionWorld Lite.
+This directory preserves the project's scientific methods, measurement scope and original experiment records. The current system contains a trained, frozen **IC-01** one-step visual predictor, a TRAIN-fitted **M6** XY residual, and a live MuJoCo comparison demo. This index replaces only the old planning-era status summary; the underlying research and acceptance evidence is not rewritten.
 
-The purpose is to explain not only what the system does, but also why particular approaches were investigated, how they were evaluated, and what the evidence supports.
+## Experiments and accepted records
 
-## Research Objectives
+| Phase | Original source of truth | What it establishes |
+| --- | --- | --- |
+| M3 dataset and baselines | [M3_DATASET_BASELINES.md](M3_DATASET_BASELINES.md) | 180 episodes, episode-wise TRAIN/VALIDATION/TEST split, data schema, persistence and privileged-state constant-velocity baselines |
+| M4 integrated model | [M4 acceptance](../docs/M4_ACCEPTANCE_RECORD.md) | Frozen IC-01, **one-time held-out TEST** metrics, gates, immutable archive hashes |
+| M6 contact residual | [M6_RESIDUAL_EXPERIMENT.md](M6_RESIDUAL_EXPERIMENT.md) | TRAIN-only residual selection, one-pass **VALIDATION**, ablations and negative subsets |
+| M7 local demo | [M7 release](../docs/M7_LOCAL_RELEASE.md) | Local visual comparison, physical reference and checkpoint distribution restrictions |
+| M8 web deployment | [M8 production record](../docs/M8_STEP3_DEPLOYMENT.md) | Real Production online inference, physics, HTTP/browser checks, platform differences and remaining acceptance gates |
 
-The project aims to investigate whether a lightweight action-conditioned learned world model can predict physical interactions in a constrained virtual environment.
+For a readable synthesis, see [Evaluation](../docs/evaluation.md), [Models](../docs/models.md), and [Limitations](../docs/limitations.md).
 
-Potential research topics include:
+## Evidence rules
 
-- Action-conditioned physical prediction
-- Multi-step rollout consistency
-- Contact and interaction modeling
-- Generalization across physical conditions
-- Model evaluation and prediction reliability
+- Never reopen or rerun the sealed **M4 TEST** to produce revised headline claims.
+- Distinguish **M4 TEST** from **M6 VALIDATION**. The reported **13.18%** reduction is a validation result, not an independent M6 TEST result.
+- Keep the reported regressions in static/no-contact subsets and the observed M8 live contact run.
+- Preserve frozen sources, training/evaluation provenance, data split policy and checksum evidence.
+- Keep experimental or deployment uncertainties visible; a planned or inferred check is not a measured PASS.
+- Do not claim public end-to-end reproducibility when checkpoints, fitted runtime JSON and generated datasets are not distributed.
 
-These are research areas, not confirmed experimental results or finalized innovation decisions.
-
-## Research Workflow
-
-Each formal experiment should document:
-
-### 1. Research Question
-
-What specific technical question are we attempting to answer?
-
-### 2. Hypothesis
-
-What result do we expect, and why?
-
-### 3. Background and References
-
-Which existing papers, repositories, or technical findings informed the experiment?
-
-### 4. Experimental Setup
-
-What datasets, models, configurations, hardware, and evaluation methods were used?
-
-### 5. Baseline and Proposed Method
-
-What existing approach are we comparing against, and what has changed?
-
-### 6. Results and Evidence
-
-What was actually measured?
-
-Include relevant metrics, raw results, reproducibility instructions, and code references.
-
-### 7. Analysis and Limitations
-
-Did the evidence support the hypothesis?
-
-What failed, what remains uncertain, and what should be investigated next?
-
-## Evidence Principles
-
-- Never fabricate experimental results.
-- Clearly distinguish hypotheses from measured findings.
-- Preserve relevant unsuccessful experiments.
-- Record important configuration values and random seeds.
-- Use held-out evaluation data when appropriate.
-- Document source attribution and relevant licenses.
-- Explain limitations and unresolved problems.
-- Keep experimental conclusions traceable to code and data.
-
-## Research Status
-
-Research setup is in progress.
-
-No completed experiments or verified model performance results are claimed yet.
-
-Additional research files will be introduced only when their contents and purpose are approved.
+The research records are historical evidence. A reader-facing guide may summarize them, but must link back to the original documents without altering their meaning.
